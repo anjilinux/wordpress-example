@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wp-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wp-app
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: 
+      maxUnavailable: 1
+      maxSurge: 1 
+  template:
+    metadata:
+      labels:
+        app: wp-app
+    spec:
+      containers:
+        - image: wordpress:latest
+          imagePullPolicy: Always
+          name: wp-app
+          ports:
+            - containerPort: 80
